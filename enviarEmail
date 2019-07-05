@@ -1,0 +1,74 @@
+function email() {
+
+var ss = SpreadsheetApp.getActiveSpreadsheet();
+ss.setActiveSheet(ss.getSheetByName("Ações"));
+var sheet = SpreadsheetApp.getActiveSheet();
+var dataRange = sheet.getRange("A2:F4");
+var data = dataRange.getValues();
+for (i in data) {
+var rowData = data[i];
+var emailAddress = rowData[74];
+var recipient = rowData[0];
+var message1 = rowData[2]; 
+var message2 = rowData[3];
+//var parameter2 = rowData[4];
+//var message3 = rowData[5];
+var subject = "teste"
+var message = 'ola '+'\n\n'+message1+'\n\n'+ message2;
+//var message = "teste"+'\n\n'+"teste2"
+  //MailApp.sendEmail(emailAddress, subject, message);
+   MailApp.sendEmail("rodrigogalvaopatriota@gmail.com","ola",message);
+}
+} 
+
+
+
+
+
+
+
+//function criarEmail() {
+  
+//  var sheet=SpreadsheetApp.getActiveSheet()
+  
+//  var linfim=sheet.getLastRow()
+//var dataRange = sheet.getRange("a2:bw"+linfim)
+//  var i=2
+// Browser.msgBox(data)
+
+//  for(i in data){
+ //  var rowData = data[i];
+ // var assunto = "Você possui uma ação: "+sheet.getRange(i, 1).getValue()
+ //  var email=sheet.getRange(i, 74).getValue()//endereço de email 
+ //  var corpo=sheet.getRange(i, 73).getValue()//corpo do email
+ // var enviaEmail=sheet.getRange(i, 75).getValue()//se vazio sera preenchido com sim e não vai enviar novamente
+ //  var status = sheet.getRange(i,1).getValue()
+   
+ //  var mensagem1 = rowData[1];
+ //  var mensagem2 = rowData[3];
+   
+ //  var corpo = 'Olá seguem as ações: '+'\n\n'+'-Status: '+mensagem1+'\n\n'+'-Número da ação'+mensagem2
+   
+   
+   
+   
+   
+  //     if(enviaEmail==""){
+   //      MailApp.sendEmail(email, assunto, corpo);
+          //Browser.msgBox("conteudo: "+sheet.getRange(i, 20).getValue()+" dentro do if linha: "+" nome da pasta criada: "+nomePasta+"  linha: "+i)
+          
+    //      sheet.getRange(i, 75).setValue("sim")
+    //   }
+       
+     //  if(status=="Atrasada"){
+     //   MailApp.sendEmail(email, assunto, corpo);
+     //     //Browser.msgBox("conteudo: "+sheet.getRange(i, 20).getValue()+" dentro do if linha: "+" nome da pasta criada: "+nomePasta+"  linha: "+i)
+          
+      //    sheet.getRange(i, 75).setValue("sim, tarefa em atraso")
+       //}
+   
+    
+ // } 
+ // Browser.msgBox("Emails enviados.")
+ //}
+ 
