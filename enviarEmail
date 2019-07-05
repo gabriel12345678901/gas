@@ -1,23 +1,38 @@
-function email() {
+function criarEmail() {
 
 var ss = SpreadsheetApp.getActiveSpreadsheet();
 ss.setActiveSheet(ss.getSheetByName("Ações"));
 var sheet = SpreadsheetApp.getActiveSheet();
-var dataRange = sheet.getRange("A2:F4");
+var linfim=sheet.getLastRow()
+var dataRange = sheet.getRange("A2:by"+linfim);
 var data = dataRange.getValues();
-for (i in data) {
+var i = 2
+
+
+//for (i in data) {
+for(i in 4){
 var rowData = data[i];
-var emailAddress = rowData[74];
-var recipient = rowData[0];
-var message1 = rowData[2]; 
-var message2 = rowData[3];
-//var parameter2 = rowData[4];
-//var message3 = rowData[5];
-var subject = "teste"
-var message = 'ola '+'\n\n'+message1+'\n\n'+ message2;
-//var message = "teste"+'\n\n'+"teste2"
-  //MailApp.sendEmail(emailAddress, subject, message);
-   MailApp.sendEmail("rodrigogalvaopatriota@gmail.com","ola",message);
+
+//var recipient = rowData[0];
+var status = rowData[1]; 
+var numAcao = rowData[3];
+var carimbo = rowData[5];
+var prazo = rowData[6];
+var usinagem = rowData[9];
+var responsavel = rowData[10];
+var problema = rowData[40];
+var matricula = rowData[41];
+var nome = rowData[71];
+var desc = rowData[72];
+var evidencia = rowData[73];
+var dados = rowData[74]
+var emailAddress = rowData[75];
+var statusEmail = rowData[76];
+
+var subject = status;
+//+'/n/n'+'7. Problema: '+problema
+var message = '1. Status: '+status+'\n\n'+'2. Número da ação: '+numAcao+'/n/n'+'3. Carimbo: '+carimbo+'4. Prazo: '+prazo+'\n\n'+ '5. Usinagem: '+usinagem+'/n/n'+'6. Responsável: '+responsavel+'/n/n'+'7. Problema: '+problema+'/n/n'+'8. Matricula: '+matricula+'/n/n'+'9. Nome: '+nome+'/n/n'+'8. Descrição da ação: '+desc+'/n/n'+'9. Evidência da tratativa: '+evidencia+'/n/n'+'10. Dados: '+dados;
+   MailApp.sendEmail(emailAddress,"ola",message);
 }
 } 
 
