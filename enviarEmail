@@ -1,26 +1,34 @@
 
 function criarEmail() {
-
+ // variavel ss recebe todas as propriedades da planilha ativa:
  var ss = SpreadsheetApp.getActiveSpreadsheet();
+ //acessa a aba ações
  ss.setActiveSheet(ss.getSheetByName("Ações"));
+ //variavel sheet recebe as propriedades da aba, é a única maneira de acessar as células:
  var sheet = SpreadsheetApp.getActiveSheet();
+ //variavel fim busca a primeira linha não preenchida da coluna CJ
  var fim = sheet.getRange('CJ1').getNextDataCell(SpreadsheetApp.Direction.DOWN).getRow();  
-  
- //capta ultima linha 
+ //capta ultima linha preenchida:
  var linfim = fim-1  
- var dataRange = sheet.getRange("A2:CN"+linfim);
+ //variavel que busca o range, usando a variavel linfim, que retorna a ultima linha, isto, para definição volátil do loop:
+ var dataRange = sheet.getRange("A2:CP"+linfim);
+ //variavel data, busca valores de dataRange:
  var data = dataRange.getValues();
+ //contador i, inicio do loop na linha 2
  var i = 2
-
+ 
+ //loop for, laço repetidor que contara da linha 2 até a ultima linha preenchida:
  for(i in data){
   
+  //Criação do objeto rowData, que recebe os atributos de data[i]:
   var rowData = data[i];
-  var status = rowData[1]; 
-  var numAcao = rowData[3];
-  var carimbo = rowData[5];
-  var prazo = rowData[6];
+  //declaração de variáveis, cada variavel capta a coluna respectiva em [número da coluna]:
+  var status = rowData[1]; //capta valor da coluna B
+  var numAcao = rowData[3]; //capta valor da coluna D
+  var carimbo = rowData[5]; //capta valor da coluna F
+  var prazo = rowData[6];//segue a mesma lógica acima
   var usinagem = rowData[9];
-  var responsavel = rowData[10];
+  var turno = rowData[10];
   var problema = rowData[40];
   var matricula = rowData[41];
   var resp_lancamento = rowData[86];
@@ -29,17 +37,22 @@ function criarEmail() {
   var evidencia = rowData[89];
   var dados = rowData[90]
   var emailAddress = rowData[91];
+  var link_rodape = rowData[93]
   var assunto = 'Você possui uma ação: '+status;
-  var message = '1. Número da ação: '+numAcao+'\n\n'+'2. Carimbo: '+carimbo+'\n\n'+'3. Prazo: '+prazo+'\n\n'+ '4. Usinagem: '+usinagem+'\n\n'+'5. Responsável: '+responsavel+'\n\n'+'6. Problema: '+problema+'\n\n'+'7. Matricula: '+matricula+'\n\n'+'8. Responsável lançamento: '+resp_lancamento+'\n\n'+'9. Responsável tratativa: '+resp_tratativa+'\n\n'+'10. Descrição da ação: '+desc+'\n\n'+'11. Evidência da tratativa: '+evidencia;
+  
+  //variável message, capta todas as variáveis acima.
+  var message = '1. Número da ação: '+numAcao+'\n\n'+'2. Carimbo: '+carimbo+'\n\n'+'3. Prazo: '+prazo+'\n\n'+ '4. Usinagem: '+usinagem+'\n\n'+'5. Turno: '+turno+'\n\n'+'6. Problema: '+problema+'\n\n'+'7. Matricula: '+matricula+'\n\n'+'8. Responsável lançamento: '+resp_lancamento+'\n\n'+'9. Responsável tratativa: '+resp_tratativa+'\n\n'+'10. Link: '+link_rodape+'\n\n'+'\n\n'+'=> Email automático, favor não responder.';
  
-  if(status=="Atrasada"){ 
-     
-   MailApp.sendEmail(emailAddress,assunto,message);
+   //envia email somente se o valor da variavel status ser igual a Atrasada:
+   if(status=="Atrasada"){ 
+   //envia email, caso obedeça a condicional 
+     MailApp.sendEmail(emailAddress,assunto,message); 
     
   }
   
   if(status=="No prazo"){ 
-   //Browser.msgBox('entrou no if no prazo: '+status)  
+   //Browser.msgBox('entrou no if no prazo: '+status) esta linha é usada para testar o codigo. retorna valor na tela.
+   //envia email caso entre na condicional
    MailApp.sendEmail(emailAddress,assunto,message);
    
   }
