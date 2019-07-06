@@ -1,76 +1,51 @@
+
 function criarEmail() {
 
-var ss = SpreadsheetApp.getActiveSpreadsheet();
-ss.setActiveSheet(ss.getSheetByName("Ações"));
-var sheet = SpreadsheetApp.getActiveSheet();
-var fim = sheet.getRange('CJ1').getNextDataCell(SpreadsheetApp.Direction.DOWN).getRow();  
+ var ss = SpreadsheetApp.getActiveSpreadsheet();
+ ss.setActiveSheet(ss.getSheetByName("Ações"));
+ var sheet = SpreadsheetApp.getActiveSheet();
+ var fim = sheet.getRange('CJ1').getNextDataCell(SpreadsheetApp.Direction.DOWN).getRow();  
   
-//capta ultima linha 
-var linfim = fim-1  
+ //capta ultima linha 
+ var linfim = fim-1  
+ var dataRange = sheet.getRange("A2:CN"+linfim);
+ var data = dataRange.getValues();
+ var i = 2
 
-//Browser.msgBox('ultima linha, antes do for: '+linfim)  
-
-var dataRange = sheet.getRange("A2:CN"+linfim);
+ for(i in data){
   
-var data = dataRange.getValues();
- // Browser.msgBox('ultima linha, antes do for: '+data) 
-var i = 2
-
-
-
-for(i in data){
-  
-var rowData = data[i];
-
-//var recipient = rowData[0];
-var status = rowData[1]; 
-  
-var numAcao = rowData[3];
-var carimbo = rowData[5];
-var prazo = rowData[6];
-var usinagem = rowData[9];
-var responsavel = rowData[10];
-var problema = rowData[40];
-var matricula = rowData[41];
-  
-var resp_lancamento = rowData[86];
-var resp_tratativa = rowData[87]; 
-var desc = rowData[88];
-  
-var evidencia = rowData[89];
-  
-var dados = rowData[90]
-var emailAddress = rowData[91];
-var assunto = 'Você possui uma ação: '+status;
-var message = '1. Status: '+status+'\n\n'+'2. Número da ação: '+numAcao+'\n\n'+'3. Carimbo: '+carimbo+'\n\n'+'4. Prazo: '+prazo+'\n\n'+ '5. Usinagem: '+usinagem+'\n\n'+'6. Responsável: '+responsavel+'\n\n'+'7. Problema: '+problema+'\n\n'+'8. Matricula: '+matricula+'\n\n'+'9. Nome: '+resp_lancamento+'\n\n'+'10. Nome: '+resp_tratativa+'\n\n'+'11. Descrição da ação: '+desc+'\n\n'+'12. Evidência da tratativa: '+evidencia;
- 
-//Browser.msgBox('antes do if: '+status)  
-
+  var rowData = data[i];
+  var status = rowData[1]; 
+  var numAcao = rowData[3];
+  var carimbo = rowData[5];
+  var prazo = rowData[6];
+  var usinagem = rowData[9];
+  var responsavel = rowData[10];
+  var problema = rowData[40];
+  var matricula = rowData[41];
+  var resp_lancamento = rowData[86];
+  var resp_tratativa = rowData[87]; 
+  var desc = rowData[88];
+  var evidencia = rowData[89];
+  var dados = rowData[90]
+  var emailAddress = rowData[91];
+  var assunto = 'Você possui uma ação: '+status;
+  var message = '1. Número da ação: '+numAcao+'\n\n'+'2. Carimbo: '+carimbo+'\n\n'+'3. Prazo: '+prazo+'\n\n'+ '4. Usinagem: '+usinagem+'\n\n'+'5. Responsável: '+responsavel+'\n\n'+'6. Problema: '+problema+'\n\n'+'7. Matricula: '+matricula+'\n\n'+'8. Responsável lançamento: '+resp_lancamento+'\n\n'+'9. Responsável tratativa: '+resp_tratativa+'\n\n'+'10. Descrição da ação: '+desc+'\n\n'+'11. Evidência da tratativa: '+evidencia;
  
   if(status=="Atrasada"){ 
-   //Browser.msgBox('entrou no if atrasada: '+status)  
+     
    MailApp.sendEmail(emailAddress,assunto,message);
-  
-   
-   
- }
+    
+  }
   
   if(status=="No prazo"){ 
    //Browser.msgBox('entrou no if no prazo: '+status)  
    MailApp.sendEmail(emailAddress,assunto,message);
+   
+  }
+ 
+ 
+ }//fecha o for
   
-   
-   
- }
- 
- 
-
-
-
-}
-} 
-
-
-
-
+}//fecha a function
 
