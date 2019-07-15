@@ -1,0 +1,20 @@
+function teste() {
+//id item checkbox testando: 1679183567
+      var form = FormApp.getActiveForm();
+      var title = form.getTitle();
+      var id = form.getId();
+      
+    
+      var item = form.addCheckboxItem()
+      item.setTitle('testado').setChoices([
+      item.createChoice('primeiro'),
+      item.createChoice('segundo'),
+      item.createChoice('terceiro'),
+      ])
+      
+      var itemId = item.getId()
+      var tituloItem = item.getTitle()
+      
+      Browser.msgBox('entrou no if no prazo: '+idCheck);
+        
+}
