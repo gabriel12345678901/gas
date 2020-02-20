@@ -1,4 +1,4 @@
-
+//https://developers.google.com/apps-script/articles/sending_emails
 function criarEmail() {
  // variavel ss recebe todas as propriedades da planilha ativa:
  var ss = SpreadsheetApp.getActiveSpreadsheet();
