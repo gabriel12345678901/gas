@@ -1,0 +1,143 @@
+//https://developers.google.com/apps-script/articles/sending_emails
+
+function fluxo() {
+ // variavel ss recebe todas as propriedades da planilha ativa:
+ var ss = SpreadsheetApp.getActiveSpreadsheet();
+ var sheet_receber_entregar = SpreadsheetApp.getActiveSheet();
+ //acessa a aba receber/entregar
+ ss.setActiveSheet(ss.getSheetByName("receber/entregar"));
+ //variavel sheet recebe as propriedades da aba, é a única maneira de acessar as células:
+ var reserva = sheet_receber_entregar.getRange(1, 3).getValue()
+ var id = sheet_receber_entregar.getRange(2, 3).getValue()
+ var corredor = sheet_receber_entregar.getRange(3, 3).getValue()
+ var fluxo = sheet_receber_entregar.getRange(4, 3).getValue()
+ var verifica = sheet_receber_entregar.getRange(9, 2).getValue()
+ var verifica_status =  sheet_receber_entregar.getRange(8, 1).getValue()
+  //Browser.msgBox("valor do verifica status: "+verifica_status) 
+ 
+if(verifica != "ESSA RESERVA NÃO EXISTE NO SISTEMA, ATUALIZE!"){
+   
+ // variavel ss recebe todas as propriedades da planilha ativa:
+ var status = SpreadsheetApp.getActiveSpreadsheet();
+  
+ //acessa a aba status
+ status.setActiveSheet(status.getSheetByName("status"));
+ var sheet_status = SpreadsheetApp.getActiveSheet();
+ 
+//variavel fim busca a primeira linha não preenchida da coluna A
+ var fim = sheet_status.getRange('A1').getNextDataCell(SpreadsheetApp.Direction.DOWN).getRow();  
+ //capta ultima linha preenchida:
+ var linfim = fim+1 
+
+//VERIFICAÇÃO SE HÁ LANÇAMENTO
+
+   var achou = "não"
+  
+   if(verifica_status != "nok"){
+     
+     //cria filtro, substituição da tecnica for
+     var status = SpreadsheetApp.getActive();
+     status.getRange('A1').activate();
+     var criteria = SpreadsheetApp.newFilterCriteria().whenTextContains(verifica_status).build();
+     status.getActiveSheet().getFilter().setColumnFilterCriteria(1, criteria);
+    
+        //busca linha atual
+        sheet_status.getCurrentCell().getNextDataCell(SpreadsheetApp.Direction.DOWN).activate();
+        var linha = sheet_status.getActiveRange().getRowIndex()
+     
+        sheet_status.getRange(linha, 2).setValue(fluxo)
+        //imprime hora
+        sheet_status.getRange(linha,3).activate();
+        sheet_status.getRange(linha,3).setFormula('=now()');
+        //fim hora 
+ 
+        sheet_status.getRange(linha,4).setValue('estrada da graciosa, 870, curitiba, paraná');
+        sheet_status.getRange(linha,5).setValue(corredor);
+        sheet_status.getRange(linha,6).setValue(id);
+     
+        //imprime id tecnico
+        sheet_status.getRange(linha,7).activate();
+        sheet_status.getRange(linha,7).setFormula('=IFERROR(VLOOKUP(A1475;zmm062!C:H;6;FALSE);"NÃO LOCALIZADO")');
+        //fim id tecnico 
+     
+        //imprime nome tecnico
+        sheet_status.getRange(linha,8).activate();
+        sheet_status.getRange(linha,8).setFormula('=IFERROR(VLOOKUP(G1475;Página1!A:C;3;FALSE);"NÃO LOCALIZADO")');
+        //fim nome tecnico 
+     
+        //imprime nome GA
+        sheet_status.getRange(linha,9).activate();
+        sheet_status.getRange(linha,9).setFormula('=IFERROR(VLOOKUP(G1475;Página1!A:AE;31;FALSE);"NÃO LOCALIZADO")');
+        //fim nome GA 
+     
+        //imprime nome GO
+        sheet_status.getRange(linha,10).activate();
+        sheet_status.getRange(linha,10).setFormula('=IFERROR(VLOOKUP(G1475;Página1!A:AJ;36;FALSE);"NÃO LOCALIZADO")');
+        //fim nome GO
+     
+     
+     //finaliza tecnica do filtro
+     status.getActiveSheet().getFilter().remove();
+     status.getRange('A1:J1582').createFilter();
+           
+     var achou = "sim"
+     
+     }
+
+  
+  //SE NÃO ENCONTRAR A RESERVA
+  if (achou =="não"){
+ 
+     sheet_status.getRange(linfim,1).setValue(reserva);
+     sheet_status.getRange(linfim, 2).setValue(fluxo);
+     //imprime hora
+     sheet_status.getRange(linfim,3).activate();
+     sheet_status.getRange(linfim,3).setFormula('=now()');
+     //fim hora 
+ 
+     sheet_status.getRange(linfim,4).setValue('estrada da graciosa, 870, curitiba, paraná');
+     sheet_status.getRange(linfim,5).setValue(corredor);
+     sheet_status.getRange(linfim,6).setValue(id);
+     
+     //imprime id tecnico
+     sheet_status.getRange(linfim,7).activate();
+     sheet_status.getRange(linfim,7).setFormula('=IFERROR(VLOOKUP(A1475;zmm062!C:H;6;FALSE);"NÃO LOCALIZADO")');
+     //fim id tecnico 
+     
+     //imprime nome tecnico
+     sheet_status.getRange(linfim,8).activate();
+     sheet_status.getRange(linfim,8).setFormula('=IFERROR(VLOOKUP(G1475;Página1!A:C;3;FALSE);"NÃO LOCALIZADO")');
+     //fim nome tecnico 
+     
+     //imprime nome GA
+     sheet_status.getRange(linfim,9).activate();
+     sheet_status.getRange(linfim,9).setFormula('=IFERROR(VLOOKUP(G1475;Página1!A:AE;31;FALSE);"NÃO LOCALIZADO")');
+     //fim nome GA 
+     
+     //imprime nome GO
+     sheet_status.getRange(linfim,10).activate();
+     sheet_status.getRange(linfim,10).setFormula('=IFERROR(VLOOKUP(G1475;Página1!A:AJ;36;FALSE);"NÃO LOCALIZADO")');
+     //fim nome GO
+     
+     
+  }
+
+ //acessa a aba receber/entregar
+ss.setActiveSheet(ss.getSheetByName("receber/entregar")); 
+Browser.msgBox("Este processo foi finalizado, agora clique no botão ao lado para finalizar o procedimento.AHAHAHAH")  
+
+
+}  
+
+
+if(verifica == "ESSA RESERVA NÃO EXISTE NO SISTEMA, ATUALIZE!"){
+ss.setActiveSheet(ss.getSheetByName("receber/entregar")); 
+Browser.msgBox("Esta reserva não foi localizada, atualize o sistema.")  
+
+}
+
+
+
+}
+
+
