@@ -13,6 +13,9 @@ function fluxo() {
  var fluxo = sheet_receber_entregar.getRange(4, 3).getValue()
  var verifica = sheet_receber_entregar.getRange(9, 2).getValue()
  var verifica_status =  sheet_receber_entregar.getRange(8, 1).getValue()
+ 
+ sheet_receber_entregar.getRange(20, 1).activate()
+ 
   //Browser.msgBox("valor do verifica status: "+verifica_status) 
  
 if(verifica != "ESSA RESERVA NÃO EXISTE NO SISTEMA, ATUALIZE!"){
@@ -57,23 +60,33 @@ if(verifica != "ESSA RESERVA NÃO EXISTE NO SISTEMA, ATUALIZE!"){
      
         //imprime id tecnico
         sheet_status.getRange(linha,7).activate();
-        sheet_status.getRange(linha,7).setFormula('=IFERROR(VLOOKUP(A1475;zmm062!C:H;6;FALSE);"NÃO LOCALIZADO")');
+        sheet_status.getRange(linha,7).setFormula('=IFERROR(VLOOKUP(A'+linha+';zmm062!C:H;6;FALSE);"NÃO LOCALIZADO")');
         //fim id tecnico 
      
         //imprime nome tecnico
         sheet_status.getRange(linha,8).activate();
-        sheet_status.getRange(linha,8).setFormula('=IFERROR(VLOOKUP(G1475;Página1!A:C;3;FALSE);"NÃO LOCALIZADO")');
+        sheet_status.getRange(linha,8).setFormula('=IFERROR(VLOOKUP(H'+linha+';Página1!A:C;3;FALSE);"NÃO LOCALIZADO")');
         //fim nome tecnico 
      
         //imprime nome GA
         sheet_status.getRange(linha,9).activate();
-        sheet_status.getRange(linha,9).setFormula('=IFERROR(VLOOKUP(G1475;Página1!A:AE;31;FALSE);"NÃO LOCALIZADO")');
+        sheet_status.getRange(linha,9).setFormula('=IFERROR(VLOOKUP(I'+linha+';Página1!A:AE;31;FALSE);"NÃO LOCALIZADO")');
         //fim nome GA 
      
         //imprime nome GO
         sheet_status.getRange(linha,10).activate();
-        sheet_status.getRange(linha,10).setFormula('=IFERROR(VLOOKUP(G1475;Página1!A:AJ;36;FALSE);"NÃO LOCALIZADO")');
+        sheet_status.getRange(linha,10).setFormula('=IFERROR(VLOOKUP(J'+linha+';Página1!A:AJ;36;FALSE);"NÃO LOCALIZADO")');
         //fim nome GO
+        
+        //imprime DELAY
+        sheet_status.getRange(linha,11).activate();
+        sheet_status.getRange(linha,11).setFormula('=IF(B'+linha+'="RECEBIDO PELA SEREDE";TODAY()-C'+linha+';B'+linha+')');
+        //fim DELAY
+        
+        //imprime DELAY UNPICKING
+        sheet_status.getRange(linha,12).activate();
+        sheet_status.getRange(linha,12).setFormula('=IF(K'+linha+'="ENTREGUE AO TÉCNICO";K'+linha+';IF(K'+linha+'>10;"MENOS QUE 10 DIAS";"MAIS QUE 10 DIAS"))');
+        //fim DELAY UNPICKING
      
      
      //finaliza tecnica do filtro
@@ -101,30 +114,41 @@ if(verifica != "ESSA RESERVA NÃO EXISTE NO SISTEMA, ATUALIZE!"){
      
      //imprime id tecnico
      sheet_status.getRange(linfim,7).activate();
-     sheet_status.getRange(linfim,7).setFormula('=IFERROR(VLOOKUP(A1475;zmm062!C:H;6;FALSE);"NÃO LOCALIZADO")');
+     sheet_status.getRange(linfim,7).setFormula('=IFERROR(VLOOKUP(A'+linfim+';zmm062!C:H;6;FALSE);"NÃO LOCALIZADO")');
      //fim id tecnico 
      
      //imprime nome tecnico
      sheet_status.getRange(linfim,8).activate();
-     sheet_status.getRange(linfim,8).setFormula('=IFERROR(VLOOKUP(G1475;Página1!A:C;3;FALSE);"NÃO LOCALIZADO")');
+     sheet_status.getRange(linfim,8).setFormula('=IFERROR(VLOOKUP(G'+linfim+';Página1!A:C;3;FALSE);"NÃO LOCALIZADO")');
      //fim nome tecnico 
      
      //imprime nome GA
      sheet_status.getRange(linfim,9).activate();
-     sheet_status.getRange(linfim,9).setFormula('=IFERROR(VLOOKUP(G1475;Página1!A:AE;31;FALSE);"NÃO LOCALIZADO")');
+     sheet_status.getRange(linfim,9).setFormula('=IFERROR(VLOOKUP(G'+linfim+';Página1!A:AE;31;FALSE);"NÃO LOCALIZADO")');
      //fim nome GA 
      
      //imprime nome GO
      sheet_status.getRange(linfim,10).activate();
-     sheet_status.getRange(linfim,10).setFormula('=IFERROR(VLOOKUP(G1475;Página1!A:AJ;36;FALSE);"NÃO LOCALIZADO")');
+     sheet_status.getRange(linfim,10).setFormula('=IFERROR(VLOOKUP(G'+linfim+';Página1!A:AJ;36;FALSE);"NÃO LOCALIZADO")');
      //fim nome GO
+     
+     //imprime DELAY
+     sheet_status.getRange(linfim,11).activate();
+     sheet_status.getRange(linfim,11).setFormula('=IF(B'+linfim+'="RECEBIDO PELA SEREDE";TODAY()-C'+linfim+';B'+linfim+')');
+     //fim DELAY
+        
+     //imprime DELAY UNPICKING
+     sheet_status.getRange(linfim,12).activate();
+     sheet_status.getRange(linfim,12).setFormula('=IF(K'+linfim+'="ENTREGUE AO TÉCNICO";K'+linfim+';IF(K'+linfim+'>10;"MENOS QUE 10 DIAS";"MAIS QUE 10 DIAS"))');
+     //fim DELAY UNPICKING
      
      
   }
 
  //acessa a aba receber/entregar
 ss.setActiveSheet(ss.getSheetByName("receber/entregar")); 
-Browser.msgBox("Este processo foi finalizado, agora clique no botão ao lado para finalizar o procedimento.AHAHAHAH")  
+sheet_receber_entregar.getRange(18, 1).activate()
+Browser.msgBox("Este processo foi finalizado, agora clique no botão ao lado para finalizar o procedimento.")  
 
 
 }  
@@ -132,11 +156,12 @@ Browser.msgBox("Este processo foi finalizado, agora clique no botão ao lado par
 
 if(verifica == "ESSA RESERVA NÃO EXISTE NO SISTEMA, ATUALIZE!"){
 ss.setActiveSheet(ss.getSheetByName("receber/entregar")); 
+sheet_receber_entregar.getRange(18, 1).activate()
 Browser.msgBox("Esta reserva não foi localizada, atualize o sistema.")  
 
 }
 
-
+sheet_receber_entregar.getRange(18, 1).activate()
 
 }
 
