@@ -1,5 +1,7 @@
 //https://developers.google.com/apps-script/articles/sending_emails
 
+//https://developers.google.com/apps-script/articles/sending_emails
+
 function fluxo() {
  // variavel ss recebe todas as propriedades da planilha ativa:
  var ss = SpreadsheetApp.getActiveSpreadsheet();
@@ -38,6 +40,13 @@ if(verifica != "ESSA RESERVA NÃO EXISTE NO SISTEMA, ATUALIZE!"){
   
    if(verifica_status != "nok"){
      
+    
+     //atualiza tecnica do filtro
+     status.getRange('A1:L1').activate
+     status.getActiveSheet().getFilter().remove();
+     status.getRange('A1:L'+fim).createFilter();
+     
+     
      //cria filtro, substituição da tecnica for
      var status = SpreadsheetApp.getActive();
      status.getRange('A1').activate();
@@ -56,7 +65,7 @@ if(verifica != "ESSA RESERVA NÃO EXISTE NO SISTEMA, ATUALIZE!"){
  
         sheet_status.getRange(linha,4).setValue('estrada da graciosa, 870, curitiba, paraná');
         sheet_status.getRange(linha,5).setValue(corredor);
-        sheet_status.getRange(linha,6).setValue(id);
+        sheet_status.getRange(linha,6).setValue(id);//AQUI
      
         //imprime id tecnico
         sheet_status.getRange(linha,7).activate();
@@ -65,17 +74,17 @@ if(verifica != "ESSA RESERVA NÃO EXISTE NO SISTEMA, ATUALIZE!"){
      
         //imprime nome tecnico
         sheet_status.getRange(linha,8).activate();
-        sheet_status.getRange(linha,8).setFormula('=IFERROR(VLOOKUP(H'+linha+';Página1!A:C;3;FALSE);"NÃO LOCALIZADO")');
+        sheet_status.getRange(linha,8).setFormula('=IFERROR(VLOOKUP(G'+linha+';Página1!A:C;3;FALSE);"NÃO LOCALIZADO")');
         //fim nome tecnico 
      
         //imprime nome GA
         sheet_status.getRange(linha,9).activate();
-        sheet_status.getRange(linha,9).setFormula('=IFERROR(VLOOKUP(I'+linha+';Página1!A:AE;31;FALSE);"NÃO LOCALIZADO")');
+        sheet_status.getRange(linha,9).setFormula('=IFERROR(VLOOKUP(G'+linha+';Página1!A:AE;31;FALSE);"NÃO LOCALIZADO")');
         //fim nome GA 
      
         //imprime nome GO
         sheet_status.getRange(linha,10).activate();
-        sheet_status.getRange(linha,10).setFormula('=IFERROR(VLOOKUP(J'+linha+';Página1!A:AJ;36;FALSE);"NÃO LOCALIZADO")');
+        sheet_status.getRange(linha,10).setFormula('=IFERROR(VLOOKUP(G'+linha+';Página1!A:AJ;36;FALSE);"NÃO LOCALIZADO")');
         //fim nome GO
         
         //imprime DELAY
@@ -90,8 +99,9 @@ if(verifica != "ESSA RESERVA NÃO EXISTE NO SISTEMA, ATUALIZE!"){
      
      
      //finaliza tecnica do filtro
+     status.getRange('A1:L1').activate
      status.getActiveSheet().getFilter().remove();
-     status.getRange('A1:J1582').createFilter();
+     status.getRange('A1:L'+fim).createFilter();
            
      var achou = "sim"
      
