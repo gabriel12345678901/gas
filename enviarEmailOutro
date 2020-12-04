@@ -1,33 +1,32 @@
 function criarEmail() {
+  
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  //acessa a aba ações
+  ss.setActiveSheet(ss.getSheetByName("teste"));
+   
+  var sheet=SpreadsheetApp.getActiveSheet()
+   
+   
+  var linfim=sheet.getLastRow()
+  var i=2
+                                       
+  var corpo = "Segue em anexo planilha de desconto inventário."
+  var assunto = "Desconto inventário"
+
+  for(i ; i < linfim+1 ; i++){
+   var email=sheet.getRange(i, 2).getValue()//address of email 
+   var id_file=sheet.getRange(i, 3).getValue()//get id file, for get id PDF, is necessary: share, set link, copy part of link create.
+   var copyFile=DriveApp.getFileById(id_file)
+      
+   MailApp.sendEmail(
+   email,
+   assunto,
+   corpo,
+   {attachments: copyFile }
+   )
+   
+      
+  } 
+  Browser.msgBox("Emails enviados.")
+ }
  
- // variavel ss recebe todas as propriedades da planilha ativa:
- var ss = SpreadsheetApp.getActiveSpreadsheet();
- //acessa a aba ações
- ss.setActiveSheet(ss.getSheetByName("email"));
- //variavel sheet recebe as propriedades da aba, é a única maneira de acessar as células:
- var sheet = SpreadsheetApp.getActiveSheet();
- //variavel fim busca a primeira linha não preenchida da coluna CJ
- var fim = sheet.getRange('C1').getNextDataCell(SpreadsheetApp.Direction.DOWN).getRow();  
- //capta ultima linha preenchida:
- var linfim = fim-1
-  
- //contador i, inicio do loop na linha 2
- var i = 2
- 
- //loop for, laço repetidor que contara da linha 2 até a ultima linha preenchida:
- for(i;i < linfim; ++i){
-  
-     
-     var mensagem = sheet.getRange(i, 1).getValue();
-     var emailAddress = sheet.getRange(i, 2).getValue();
-     var assunto = "Documentos não entregues"
-     
-     if(emailAddress != ""){
-      MailApp.sendEmail(emailAddress,assunto,mensagem); 
-      //Browser.msgBox('entrou no if email: '+emailAddress)
-     } 
-  
- 
-  }//fecha o for
-  
-}//fecha a function
