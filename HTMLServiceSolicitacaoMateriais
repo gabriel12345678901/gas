@@ -1,0 +1,196 @@
+//arquivo Code.gs
+function doGet(request) {
+  return HtmlService.createTemplateFromFile('Index')
+      .evaluate();
+}
+
+/* @Include JavaScript and CSS Files */
+function include(filename) {
+  return HtmlService.createHtmlOutputFromFile(filename)
+      .getContent();
+}
+
+/* @Process Form */
+function processForm(formObject) {
+  //var url = "https://docs.google.com/spreadsheets/d/1esdBN1frPQoo-rKi3-cg7-Zk4H9ZwWkonU7glN5p-so/edit#gid=0";
+  var url = "https://docs.google.com/spreadsheets/d/1hc0a1JeZf2qzEbemmYtkEIbB_tdEkxKRtpwMyItWZ50/edit#gid=0";
+  
+  
+  var ss = SpreadsheetApp.openByUrl(url);
+  var ws = ss.getSheetByName("Data");
+  
+  ws.appendRow([formObject.id,
+                formObject.material,
+                formObject.retirada,
+                formObject.dateNow,
+                formObject.quantity,
+                formObject.tipoServico,
+                formObject.observacao
+                
+                ]);
+}
+
+//arquivo Index.html
+<!DOCTYPE html>
+<html>
+    <head>
+        <base target="_top">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <?!= include('JavaScript'); ?>
+        <style type="text/css"></style>
+        
+
+    </head>
+    <body onload="pegarDataAtual()">
+      <table align="center">
+      
+        <div class="container">
+            <div class="row">
+                <div class="col-6">
+                    <form id="myForm" onsubmit="handleFormSubmit(this)">
+                        <h1 class="h4 mb-4 text-center">Solicitação de material Almox CWB</h1>
+                       
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="first_name">ID Solicitante</label>
+                                <input type="text" class="form-control" id="id" name="id" placeholder="Digite seu id Serede" required>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="last_name">Selecione o material</label>
+                               
+                                 <?
+                                    var sheet   =  SpreadsheetApp.openById("1hc0a1JeZf2qzEbemmYtkEIbB_tdEkxKRtpwMyItWZ50").getSheetByName("sku");
+                                    var lastRow = sheet.getLastRow();  
+                                    var myRange = sheet.getRange("a2:a"+lastRow); 
+                                    var data    = myRange.getValues();
+                                ?>
+
+                                 <div>
+                                 
+                                     <select class="form-control" id="material" name="material" required>
+                                          <? for (var i = 0; i < data.length; ++i) { ?>
+                                          <option><?!= data[i] ?></option>
+                                          <? } ?>
+                                      </select>
+                                 </div>
+                            
+                            
+                            </div>
+
+                             <div class="form-group col-md-6">
+                                <label for="last_name">Selecione o local de retirada</label>
+                               
+                                 <?
+                                    var sheet   =  SpreadsheetApp.openById("1hc0a1JeZf2qzEbemmYtkEIbB_tdEkxKRtpwMyItWZ50").getSheetByName("retirada");
+                                    var lastRow = sheet.getLastRow();  
+                                    var myRange = sheet.getRange("a2:a"+lastRow); 
+                                    var data    = myRange.getValues();
+                                ?>
+
+                                 <div>
+                                 
+                                     <select class="form-control" id="retirada" name="retirada" required>
+                                          <? for (var i = 0; i < data.length; ++i) { ?>
+                                          <option><?!= data[i] ?></option>
+                                          <? } ?>
+                                      </select>
+                                 </div>
+                            
+                            
+                            </div>
+
+                            
+
+                            <div class="form-group col-md-6">
+                                <label for="dateOfBirth">Digite a quantidade</label>
+                                <input type="text" class="form-control" id="quantity" name="quantity" placeholder="Digite a quantidade" required >
+                            </div>
+
+                             <div class="form-group col-md-6">
+                                <label>Data de hoje</label>
+
+                                <select class="form-control" id="dateNow" name="dateNow">
+
+                                   <? 
+
+                                    var date = new Date();
+                                    var datas = Utilities.formatDate(date, 'America/Sao_Paulo', 'MMMM dd, yyyy hh:mm:ss');
+                                    
+                                  ?>
+                                         
+                                     <option><?!= datas ?></option>
+                                        
+                                 </select>
+                                
+                                
+                                
+                              </div>
+
+                         
+                         
+                              <div class="form-group col-md-6">
+                                <label>Tipo de serviço</label>
+
+                                <select class="form-control" id="tipoServico" name="tipoServico" required>
+                                     <option></option>
+                                     <option>Serviço ao cliente(home connect)</option>
+                                     <option>Engenharia</option>
+                                        
+                                 </select>
+                                
+                                
+                                
+                              </div>
+
+                              <div class="form-group col-md-6">
+                                <label>Observação</label>
+                                <input type="text" class="form-control" id="observacao" name="observacao" placeholder="Observações">
+
+                              </div>
+                          
+
+
+
+                            
+                        </div>
+
+                        <div>
+
+                          <p><a target="_blank" href="https://datastudio.google.com/reporting/ab21ab73-d99d-45f2-82e3-be69b3f07bd5/page/dOSmC">Clique aqui para visualizar relatório.</a></p>
+                          <p><a target="_blank" href="https://t.me/+9bx-2m3Gt4c2OTBh">Pelo celular, clique aqui para acessar grupo telegram, caso haja dúvidas.</a></p>
+
+                        </div>
+
+                       
+                       
+                        <button type="submit" class="btn btn-primary btn-block">Enviar pedido</button>
+                    </form>
+                    <div id="output"></div>
+                </div>
+            </div>      
+        </div>
+      </table>
+      
+    </body>
+</html>
+
+//arquivo JavaScript.html
+<script>
+  // Prevent forms from submitting.
+  function preventFormSubmit() {
+    var forms = document.querySelectorAll('form');
+    for (var i = 0; i < forms.length; i++) {
+      forms[i].addEventListener('submit', function(event) {
+      event.preventDefault();
+      });
+    }
+  }
+  window.addEventListener('load', preventFormSubmit);    
+      
+      
+  function handleFormSubmit(formObject) {
+    google.script.run.processForm(formObject);
+    document.getElementById("myForm").reset();
+  }
+</script>
+
